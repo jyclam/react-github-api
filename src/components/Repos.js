@@ -1,13 +1,12 @@
 import styled from "styled-components";
 
 import Repo from "./Repo";
-import { repos } from "../data/repos";
 
 const RepoContainer = styled.div`
   width: 100%;
 `;
 
-const Repos = () => {
+const Repos = ({ repos }) => {
   return (
     <RepoContainer>
       {repos.map(
