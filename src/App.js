@@ -26,7 +26,7 @@ const App = () => {
   const [viewState, setViewState] = useState([]);
 
   useEffect(() => {
-    reposDispatch({ type: REPOS_ACTIONS.LOADING });
+    reposDispatch({ type: REPOS_ACTIONS.FETCHING });
 
     fetch("https://api.github.com/orgs/7geese/repos?per_page=100")
       .then((res) => res.json())
