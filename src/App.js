@@ -46,6 +46,7 @@ const App = () => {
   return (
     <Main>
       <Search setViewState={setViewState} repos={reposState.repos} />
+      {reposState.error && <div>{reposState.error.message}</div>}
       {reposState.loading ? "Loading data..." : <Repos repos={viewState} />}
     </Main>
   );
