@@ -15,6 +15,10 @@ const Main = styled.div`
   max-width: 50rem;
   width: 60%;
   height: 100vh;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const App = () => {
