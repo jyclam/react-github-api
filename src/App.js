@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 
 import Search from "./components/Search";
@@ -19,6 +19,7 @@ const Main = styled.div`
 
 const App = () => {
   const [reposState, reposDispatch] = useReducer(reposReducer, initialState);
+  const [viewState, setViewState] = useState([]);
 
   useEffect(() => {
     reposDispatch({ type: REPOS_ACTIONS.LOADING });
@@ -30,6 +31,8 @@ const App = () => {
           type: REPOS_ACTIONS.RESPONSE_COMPLETE,
           payload: { repos },
         });
+
+        setViewState(repos);
       })
       .catch((error) =>
         reposDispatch({ type: REPOS_ACTIONS.ERROR, payload: { error } }),
@@ -38,12 +41,8 @@ const App = () => {
 
   return (
     <Main>
-      <Search />
-      {reposState.loading ? (
-        "Loading data..."
-      ) : (
-        <Repos repos={reposState.repos} />
-      )}
+      <Search setViewState={setViewState} repos={reposState.repos} />
+      {reposState.loading ? "Loading data..." : <Repos repos={viewState} />}
     </Main>
   );
 };
