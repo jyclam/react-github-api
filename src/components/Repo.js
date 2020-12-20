@@ -15,7 +15,7 @@ const Repo = ({ repoName, forks, language, createdAt }) => (
       <h3>Title: {removeHypensAndCapitalizeWithExceptions(repoName)}</h3>
       <p>Number of forks: {forks}</p>
       <p>Language: {language}</p>
-      <p>Created Date: {createdAt}</p>
+      <p>Created Date: {new Date(createdAt).toLocaleDateString()}</p>
     </article>
   </ArticleContainer>
 );
