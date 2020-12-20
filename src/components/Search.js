@@ -15,6 +15,9 @@ const Search = ({ setViewState, repos }) => {
       .map((term) => term.toLowerCase())
       .filter((term) => term); // filter empty string
 
+    // display full list if no search terms
+    if (searchTerms.length === 0) return setViewState(repos);
+
     setViewState(
       repos.filter((repo) =>
         searchTerms.some((term) => repo.name.includes(term)),
