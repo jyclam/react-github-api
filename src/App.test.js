@@ -9,7 +9,3 @@ test("renders input element", () => {
   );
   expect(inputElement).toBeInTheDocument();
 });
-
-test("something", () => {
-  render(<App />);
-});
