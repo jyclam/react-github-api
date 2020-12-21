@@ -5,6 +5,7 @@ Using React, fetch public repositories and order by fork count descending. Inclu
 ### GraphQL API
 
 - Check out `graphql` branch to see the app query against Github's GraphQL API
+- You will need to add a github access token to .env.local
 
 ### REST API
 
