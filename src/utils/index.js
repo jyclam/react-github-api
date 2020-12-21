@@ -5,8 +5,8 @@ export const orderByForkProperty = (a, b) => {
 };
 
 // can break this up into two functions if capitalization with
-// exceptions or replace hypens are used separately elsewhere
-export const removeHypensAndCapitalizeWithExceptions = (str) =>
+// exceptions or replace hyphens are used separately elsewhere
+export const removeHyphensAndCapitalizeWithExceptions = (str) =>
   str
     .split("-")
     .map((word) => {

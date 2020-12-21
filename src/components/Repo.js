@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { removeHypensAndCapitalizeWithExceptions } from "../utils";
+import { removeHyphensAndCapitalizeWithExceptions } from "../utils/index";
 
 const ArticleContainer = styled.div`
   padding: 1rem;
@@ -12,7 +12,7 @@ const ArticleContainer = styled.div`
 const Repo = ({ repoName, forks, language, createdAt }) => (
   <ArticleContainer>
     <article>
-      <h3>Title: {removeHypensAndCapitalizeWithExceptions(repoName)}</h3>
+      <h3>Title: {removeHyphensAndCapitalizeWithExceptions(repoName)}</h3>
       <p>Number of forks: {forks}</p>
       <p>Language: {language}</p>
       <p>Created Date: {new Date(createdAt).toLocaleDateString()}</p>

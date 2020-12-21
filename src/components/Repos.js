@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import Repo from "./Repo";
 
-import { orderByForkProperty } from "../utils";
+import { orderByForkProperty } from "../utils/index";
 
 const RepoContainer = styled.div`
   width: 100%;
