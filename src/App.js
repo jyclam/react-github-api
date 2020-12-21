@@ -1,10 +1,12 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import styled from "styled-components";
-
-import "./App.css";
+import { gql } from "graphql-request";
 
 import Search from "./components/Search";
 import Repos from "./components/Repos";
+
+import "./App.css";
+import { graphQLClient } from "./graphql";
 
 import {
   reposReducer,
@@ -42,18 +44,38 @@ const TopBar = styled(Main)`
   }
 `;
 
+const GET_REPOS = gql`
+  {
+    organization(login: "7geese") {
+      name
+      repositories(first: 100, privacy: PUBLIC) {
+        nodes {
+          name
+          primaryLanguage {
+            name
+          }
+          forkCount
+          createdAt
+          parent {
+            nameWithOwner
+            forkCount
+          }
+        }
+      }
+    }
+  }
+`;
+
 const App = () => {
   const [reposState, reposDispatch] = useReducer(reposReducer, initialState);
 
   useEffect(() => {
-    reposDispatch({ type: REPOS_ACTIONS.FETCHING });
-
-    fetch("https://api.github.com/orgs/7geese/repos?per_page=100")
-      .then((res) => res.json())
-      .then((repos) => {
+    graphQLClient
+      .request(GET_REPOS)
+      .then((data) => {
         reposDispatch({
           type: REPOS_ACTIONS.RESPONSE_COMPLETE,
-          payload: { repos },
+          payload: { repos: data.organization.repositories.nodes },
         });
       })
       .catch((error) =>

@@ -41,7 +41,7 @@ const StyledArticle = styled.article`
 
   @media screen and (max-width: 768px) {
     h1 {
-      font-size: 3em;
+      font-size: 2em;
     }
 
     h3 {

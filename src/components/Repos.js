@@ -2,24 +2,24 @@ import styled from "styled-components";
 
 import Repo from "./Repo";
 
-import { orderByForkProperty } from "../utils/index";
+import { orderByParentOrOwnerFork } from "../utils/index";
 
 const RepoContainer = styled.div`
   width: 100%;
 `;
 
 const Repos = ({ repos }) => {
-  repos.sort(orderByForkProperty);
+  repos.sort(orderByParentOrOwnerFork);
 
   return (
     <RepoContainer>
       {repos.map(
-        ({ id, name: repoName, forks, language, created_at: createdAt }) => (
+        ({ name: repoName, forkCount, primaryLanguage, createdAt, parent }) => (
           <Repo
-            key={id}
+            key={repoName}
             repoName={repoName}
-            forks={forks}
-            language={language}
+            forks={parent ? parent.forkCount : forkCount}
+            language={primaryLanguage.name}
             createdAt={createdAt}
           />
         ),

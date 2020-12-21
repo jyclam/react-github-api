@@ -1,6 +1,8 @@
-export const orderByForkProperty = (a, b) => {
-  if (a.forks > b.forks) return -1;
-  if (a.forks < b.forks) return 1;
+export const orderByParentOrOwnerFork = (a, b) => {
+  const aFork = a.parent ? a.parent.forkCount : a.forkCount;
+  const bFork = b.parent ? b.parent.forkCount : b.forkCount;
+  if (aFork > bFork) return -1;
+  if (aFork < bFork) return 1;
   return 0;
 };
 

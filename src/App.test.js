@@ -1,8 +1,15 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("renders input element", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  const inputElement = screen.getByPlaceholderText(
+    /Search with space separated terms/i,
+  );
+  expect(inputElement).toBeInTheDocument();
+});
+
+test("something", () => {
+  render(<App />);
 });
