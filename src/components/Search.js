@@ -4,8 +4,16 @@ import { debounce } from "lodash";
 
 const SearchBox = styled.input`
   border-radius: 0.5em;
-  width: 100%;
-  height: 2em;
+  width: 70%;
+  height: 3em;
+  font-size: 1.25em;
+  background-color: #f5f8fb;
+  padding: 1em;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1em;
+    width: 90%;
+  }
 `;
 
 const Search = ({ reposDispatch, repos }) => {
@@ -35,7 +43,7 @@ const Search = ({ reposDispatch, repos }) => {
   return (
     <SearchBox
       autoFocus
-      placeholder={"Search through results with space separated search terms"}
+      placeholder={"Search with space separated terms"}
       onChange={debounce(handleChange, 150)}
     />
   );

@@ -5,8 +5,17 @@ import { removeHyphensAndCapitalizeWithExceptions } from "../utils/index";
 const ArticleContainer = styled.div`
   padding: 1rem;
   margin: 1rem;
-  border: 0.1rem solid gray;
+  background-color: #6aac56;
   border-radius: 0.5em;
+  transition: 0.3s;
+  color: #fff;
+
+  &:hover {
+    transition-timing-function: ease-out;
+    transition: 0.1s;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 0.5em 0.5em 0;
+  }
 `;
 
 const Repo = ({ repoName, forks, language, createdAt }) => (
