@@ -70,6 +70,7 @@ const App = () => {
   const [reposState, reposDispatch] = useReducer(reposReducer, initialState);
 
   useEffect(() => {
+    reposDispatch({ type: REPOS_ACTIONS.FETCHING });
     graphQLClient
       .request(GET_REPOS)
       .then((data) => {
