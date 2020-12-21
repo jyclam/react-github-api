@@ -23,7 +23,6 @@ const Main = styled.div`
 
 const App = () => {
   const [reposState, reposDispatch] = useReducer(reposReducer, initialState);
-  const [viewState, setViewState] = useState([]);
 
   useEffect(() => {
     reposDispatch({ type: REPOS_ACTIONS.FETCHING });
@@ -35,8 +34,6 @@ const App = () => {
           type: REPOS_ACTIONS.RESPONSE_COMPLETE,
           payload: { repos },
         });
-
-        setViewState(repos);
       })
       .catch((error) =>
         reposDispatch({ type: REPOS_ACTIONS.ERROR, payload: { error } }),
@@ -45,9 +42,13 @@ const App = () => {
 
   return (
     <Main>
-      <Search setViewState={setViewState} repos={reposState.repos} />
+      <Search reposDispatch={reposDispatch} repos={reposState.repos} />
       {reposState.error && <div>{reposState.error.message}</div>}
-      {reposState.loading ? "Loading data..." : <Repos repos={viewState} />}
+      {reposState.loading ? (
+        "Loading data..."
+      ) : (
+        <Repos repos={reposState.filteredRepos} />
+      )}
     </Main>
   );
 };

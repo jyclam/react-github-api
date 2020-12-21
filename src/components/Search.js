@@ -8,7 +8,7 @@ const SearchBox = styled.input`
   height: 2em;
 `;
 
-const Search = ({ setViewState, repos }) => {
+const Search = ({ reposDispatch, repos }) => {
   const handleChange = (e) => {
     const searchTerms = e.target.value
       .split(" ")
@@ -16,19 +16,26 @@ const Search = ({ setViewState, repos }) => {
       .filter((term) => term); // filter empty string
 
     // display full list if no search terms
-    if (searchTerms.length === 0) return setViewState(repos);
+    if (searchTerms.length === 0)
+      return reposDispatch({
+        type: "FILTER_DATA",
+        payload: { filteredRepos: repos },
+      });
 
-    setViewState(
-      repos.filter((repo) =>
-        searchTerms.some((term) => repo.name.includes(term)),
-      ),
-    );
+    reposDispatch({
+      type: "FILTER_DATA",
+      payload: {
+        filteredRepos: repos.filter((repo) =>
+          searchTerms.some((term) => repo.name.includes(term)),
+        ),
+      },
+    });
   };
 
   return (
     <SearchBox
       autoFocus
-      placeholder={"Enter space separated search terms"}
+      placeholder={"Search through results with space separated search terms"}
       onChange={debounce(handleChange, 150)}
     />
   );
