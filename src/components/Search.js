@@ -18,10 +18,33 @@ const SearchBox = styled.input`
 
 const Search = ({ reposDispatch, repos }) => {
   const handleChange = (e) => {
-    const searchTerms = e.target.value
-      .split(" ")
-      .map((term) => term.toLowerCase())
-      .filter((term) => term); // filter empty string
+    const rawTerms = e.target.value;
+    let searchTerms = [];
+
+    // matches double quote enclosed substrings
+    const stringsEnclosedByQuotesPattern = new RegExp(/".*?"/g);
+    // matches all double quotes
+    const allQuotesPattern = new RegExp(/["]+/g);
+
+    // match and add double quoted terms to searchTerms
+    if (stringsEnclosedByQuotesPattern.test(rawTerms)) {
+      searchTerms = [
+        ...rawTerms
+          .match(stringsEnclosedByQuotesPattern)
+          .map((str) => str.replace(allQuotesPattern, "")),
+      ];
+    }
+
+    // remove double quoted terms and add the rest to searchTerms
+    searchTerms = [
+      ...searchTerms,
+      ...rawTerms.replaceAll(stringsEnclosedByQuotesPattern, "").split(" "),
+    ];
+
+    // normalize searchTerms
+    searchTerms = searchTerms
+      .filter((term) => term) // remove empty strings
+      .map((term) => term.toLowerCase());
 
     // display full list if no search terms
     if (searchTerms.length === 0)
@@ -34,7 +57,9 @@ const Search = ({ reposDispatch, repos }) => {
       type: "FILTER_DATA",
       payload: {
         filteredRepos: repos.filter((repo) =>
-          searchTerms.some((term) => repo.name.includes(term)),
+          searchTerms.some((term) =>
+            repo.name.replace("-", " ").includes(term),
+          ),
         ),
       },
     });
