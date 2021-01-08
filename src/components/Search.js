@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { debounce } from "lodash";
@@ -17,8 +18,24 @@ const SearchBox = styled.input`
 `;
 
 const Search = ({ reposDispatch, repos }) => {
-  const handleChange = (e) => {
-    const rawTerms = e.target.value;
+  const [languageFilterTerm, setLanguageFilterTerm] = useState("All");
+  const [rawSearchTerms, setRawSearchTerms] = useState("");
+
+  const uniqueLanguages = repos.reduce(
+    (languages, currentValue) => {
+      if (!languages.includes(currentValue.primaryLanguage.name))
+        languages.push(currentValue.primaryLanguage.name);
+      return languages;
+    },
+    ["All"],
+  );
+
+  useEffect(() => {
+    handleChange();
+  }, [languageFilterTerm, rawSearchTerms]);
+
+  const handleChange = () => {
+    const rawTerms = rawSearchTerms;
     let searchTerms = [];
 
     // matches double quote enclosed substrings
@@ -46,17 +63,26 @@ const Search = ({ reposDispatch, repos }) => {
       .filter((term) => term) // remove empty strings
       .map((term) => term.toLowerCase());
 
+    let languageFilteredRepos = repos;
+    if (languageFilterTerm != "All") {
+      languageFilteredRepos = repos.filter(
+        (repo) =>
+          repo.primaryLanguage.name.toLowerCase() ===
+          languageFilterTerm.toLowerCase(),
+      );
+    }
+
     // display full list if no search terms
     if (searchTerms.length === 0)
       return reposDispatch({
         type: "FILTER_DATA",
-        payload: { filteredRepos: repos },
+        payload: { filteredRepos: languageFilteredRepos },
       });
 
     reposDispatch({
       type: "FILTER_DATA",
       payload: {
-        filteredRepos: repos.filter((repo) =>
+        filteredRepos: languageFilteredRepos.filter((repo) =>
           searchTerms.some((term) =>
             repo.name.replace("-", " ").includes(term),
           ),
@@ -66,11 +92,26 @@ const Search = ({ reposDispatch, repos }) => {
   };
 
   return (
-    <SearchBox
-      autoFocus
-      placeholder={"Search with space separated terms"}
-      onChange={debounce(handleChange, 150)}
-    />
+    <>
+      {uniqueLanguages.map((language) => (
+        <button
+          key={language}
+          disabled={languageFilterTerm === language ? true : false}
+          onClick={() => {
+            setLanguageFilterTerm(language);
+          }}
+        >
+          {language}
+        </button>
+      ))}
+      <SearchBox
+        autoFocus
+        placeholder={"Search with space separated terms"}
+        onChange={(e) => {
+          setRawSearchTerms(e.target.value);
+        }}
+      />
+    </>
   );
 };
 
